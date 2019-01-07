@@ -18,7 +18,7 @@ function hexToRgbA(hex) {
     
     c = `0x${c.join('')}`;
     
-    return `rgba(${[(c>>16)&255, (c>>8)&255, c&255].join(',')}, 0.7)`;
+    return `rgba(${[(c>>16)&255, (c>>8)&255, c&255].join(',')}, 1)`;
   }
   throw new Error(`Bad Hex`);
 }
@@ -77,12 +77,12 @@ class Canvas {
     const viewPad = viewWidth * 0.06;
     const radius = this.r;
     const circle = new Path.Circle(new Point(viewWidth - radius - viewPad, viewHeight - radius - viewPad), radius);
-    circle.fillColor = hexToRgbA(`#005FFF`);
+    circle.fillColor = hexToRgbA(`#122947`);
     // circle.fullySelected = true;
 
     const radiusTwo = radius / 2;
     const circleTwo = new Path.Circle(new Point(viewWidth - radius * 2 - viewPad, viewHeight - radiusTwo - viewPad), radiusTwo);
-    circleTwo.fillColor = hexToRgbA(`#f0460b`);
+    circleTwo.fillColor = hexToRgbA(`#eccec6`);
 
     view.onFrame = event => {
       for (let i = 0; i < circle.segments.length; i++) {

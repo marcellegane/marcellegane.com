@@ -1,0 +1,24 @@
+// Typography
+$ff-primary: 'Inconsolata', monospace;
+$ff-secondary: 'Karla', sans-serif;
+
+$fw-normal: 400;
+
+// Colors
+$black: #000;
+$white: #FFF;
+$body-text: $black;
+
+$primary-color: #f0460b;
+$primary-color: #005FFF;
+
+// Layout
+$sp-l: rem(60);
+$sp-s: rem(30);
+
+// Grid
+$gtr       : rem(30);
+$gtr-half  : $gtr / 2;
+$gtr-dbl   : $gtr * 2;
+$cols      : 12;
+$max-width : rem(1440);

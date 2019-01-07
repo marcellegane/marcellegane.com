@@ -1,0 +1,13 @@
+body {
+  -webkit-font-smoothing: antialiased;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-family: $ff-primary;
+  color: $body-text;
+}
+
+p {
+  max-width: 38em;
+  margin-top: 1em;
+  font-size: rem(21);
+}

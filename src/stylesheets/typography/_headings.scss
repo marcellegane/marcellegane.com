@@ -1,0 +1,15 @@
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: $fw-normal;
+  line-height: 1;
+}
+
+h1 {
+  font-size: rem(48);
+  font-family: $ff-secondary;
+}
+
+h2 {
+  margin-top: 0.5em;
+  font-size: rem(28);
+}

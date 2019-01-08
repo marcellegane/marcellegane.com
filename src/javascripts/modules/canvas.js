@@ -2,7 +2,6 @@ import paper from 'paper';
 
 paper.install(window);
 
-// Utility functions
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -82,21 +81,35 @@ class Canvas {
     // circle.fullySelected = true;
 
     const radiusTwo = radius / 2;
-    const circleTwo = new Path.Circle(new Point(viewWidth - radius * 2 - viewPad, viewHeight - radiusTwo - viewPad), radiusTwo);
-    circleTwo.fillColor = color2;
+    const circleTwo = new Path.Circle(new Point(viewWidth - radius * 2 - viewPad, viewHeight - radiusTwo - viewPad * 2), radiusTwo);
+    circleTwo.fillColor = color2;    
 
     view.onFrame = event => {
-      for (let i = 0; i < circle.segments.length; i++) {
+      for (let i = 0; i < circle.segments.length; i += 1) {
         const currX = circle.segments[i].point.x;
-        const sinValue = Math.sin((event.time - 0.5) * 2 + i) / 4;
+        const currY = circle.segments[i].point.y;
+        const sinValue = -Math.sin(event.time + i) / 6;
+        const cosValue = Math.cos(event.time + i) / 6;
+        
         circle.segments[i].point.x = currX + sinValue;
+        circle.segments[i].point.y = currY + cosValue;
       }
 
-      for (let i = 0; i < circleTwo.segments.length; i++) {
+      for (let i = 0; i < circleTwo.segments.length; i += 1) {
         const currX = circleTwo.segments[i].point.x;
-        const sinValue = Math.sin((event.time - 0.5) * 2 + i) / 4;
-        circleTwo.segments[i].point.x = currX - sinValue;
+        const currY = circleTwo.segments[i].point.y;
+        const sinValue = -Math.sin(event.time + i) / 10;
+        const cosValue = Math.cos(event.time + i) / 10;
+        
+        circleTwo.segments[i].point.x = currX + cosValue;
+        circleTwo.segments[i].point.y = currY + sinValue;
       }
+
+      // for (let i = 0; i < circleTwo.segments.length; i += 1) {
+      //   const currX = circleTwo.segments[i].point.x;
+      //   const sinValue = Math.cos((event.time - 0.5) * 2 + i) / 4;
+      //   circleTwo.segments[i].point.x = currX - sinValue;
+      // }
     };
   }
   

@@ -56,8 +56,7 @@ class Canvas {
     this.canvasId = canvasId;
     this.canvas = document.getElementById(this.canvasId);
     this.tool = new Tool();
-    this.r = this.getHeight() * 0.375;
-    this.eyeColours = [hexToRgbA(`#0090FC`), hexToRgbA(`#FFC66B`), hexToRgbA(`#C2BCC1`), hexToRgbA(`#00F7C4`), hexToRgbA(`#FFCF27`)];
+    this.colors = [hexToRgbA(`#C2BCC1`), hexToRgbA(`#00F7C4`), hexToRgbA(`#f9eecf`), hexToRgbA(`#eccec6`)];
   }
 
   setDimensions() {
@@ -72,17 +71,19 @@ class Canvas {
   getHeight() { return this.parent.offsetHeight; }
 
   renderNice() {
+    const color1 = this.colors[1];
+    const color2 = this.colors[0];
     const viewWidth = view.size.width;
     const viewHeight = view.size.height;
     const viewPad = viewWidth * 0.06;
-    const radius = this.r;
+    const radius = this.getHeight() * 0.19;
     const circle = new Path.Circle(new Point(viewWidth - radius - viewPad, viewHeight - radius - viewPad), radius);
-    circle.fillColor = hexToRgbA(`#122947`);
+    circle.fillColor = color1;
     // circle.fullySelected = true;
 
     const radiusTwo = radius / 2;
     const circleTwo = new Path.Circle(new Point(viewWidth - radius * 2 - viewPad, viewHeight - radiusTwo - viewPad), radiusTwo);
-    circleTwo.fillColor = hexToRgbA(`#eccec6`);
+    circleTwo.fillColor = color2;
 
     view.onFrame = event => {
       for (let i = 0; i < circle.segments.length; i++) {
@@ -126,7 +127,7 @@ class Canvas {
       const shape = new Path();
       
       // Set shape fill based on eye colour data
-      shape.fillColor = this.eyeColours[teamData[i].eyeColour];
+      shape.fillColor = this.colors[teamData[i].eyeColour];
       
       // Set shape coordinates
       shape.add(new Point(cordsX1(), cordsY1()));

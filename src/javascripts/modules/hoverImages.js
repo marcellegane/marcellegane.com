@@ -1,3 +1,5 @@
+import { TweenMax } from "gsap";
+
 const getMousePos = (e) => {
   let posx = 0;
   let posy = 0;
@@ -18,11 +20,19 @@ const getMousePos = (e) => {
 class HoverImg {
   constructor(el) {
     this.DOM = { el: el };
-    this.DOM.image = document.createElement(`span`);
-    this.DOM.image.className = `image`;
-    this.DOM.image.style.backgroundImage = `url(${this.DOM.el.dataset.img})`;
-    this.DOM.el.appendChild(this.DOM.image);
-
+    this.DOM.hover = document.createElement(`span`);
+    this.DOM.hover.className = `hover`;
+    this.DOM.hover.innerHTML = `
+      <div class="hover__inner">
+        <div 
+          class="hover__img"
+          style="background-image: url(${this.DOM.el.dataset.img})"
+        ></div>
+      </div>
+    `
+    this.DOM.el.appendChild(this.DOM.hover);
+    this.DOM.hoverInner = this.DOM.hover.querySelector('.hover__inner');
+    this.DOM.hoverImg = this.DOM.hoverInner.querySelector('.hover__img');
     this.attachHandlers();
   }
 
@@ -32,13 +42,13 @@ class HoverImg {
         left : document.body.scrollLeft + document.documentElement.scrollLeft, 
         top : document.body.scrollTop + document.documentElement.scrollTop
     };
-    this.DOM.image.style.top = `${mousePos.y + 20 - docScrolls.top}px`;
-    this.DOM.image.style.left = `${mousePos.x + 20 - docScrolls.left}px`;
+    this.DOM.hover.style.top = `${mousePos.y + 20 - docScrolls.top}px`;
+    this.DOM.hover.style.left = `${mousePos.x + 20 - docScrolls.left}px`;
   }
 
   mouseEnter(ev) {
     this.positionElement(ev);
-    this.DOM.image.style.opacity = 1;
+    this.show();
   }
 
   mouseMove(ev) {
@@ -48,7 +58,67 @@ class HoverImg {
   }
 
   mouseLeave(ev) {
-    this.DOM.image.style.opacity = 0;
+    this.hide();
+  }
+
+  show() {
+    TweenMax.killTweensOf(this.DOM.hoverInner);
+    TweenMax.killTweensOf(this.DOM.hoverImg);
+
+    this.tl = new TimelineMax({
+      onStart: () => {
+        this.DOM.hover.style.opacity = 1;
+        TweenMax.set(this.DOM.el, {zIndex: 1000});
+      }
+    })
+    .add('begin')
+    .set([this.DOM.hoverInner, this.DOM.hoverImg], {transformOrigin: '50% 100%'})
+    .add(new TweenMax(this.DOM.hoverInner, 0.3, {
+        ease: Expo.easeOut,
+        startAt: {x: '50%', y: '140%', rotation: 50},
+        x: '0%',
+        y: '0%',
+        rotation: 0
+    }), 'begin')
+    .add(new TweenMax(this.DOM.hoverImg, 0.3, {
+        ease: Expo.easeOut,
+        startAt: {x: '-50%', y: '-140%', rotation: -50},
+        x: '0%',
+        y: '0%',
+        rotation: 0
+    }), 'begin')
+    .add(new TweenMax(this.DOM.hoverImg, 0.5, {
+        ease: Expo.easeOut,
+        startAt: {scale: 2},
+        scale: 1
+    }), 'begin');
+  }
+
+  hide() {
+    TweenMax.killTweensOf(this.DOM.hoverInner);
+    TweenMax.killTweensOf(this.DOM.hoverImg);
+
+    this.tl = new TimelineMax({
+      onStart: () => {
+        TweenMax.set(this.DOM.el, {zIndex: 999});
+      },
+      onComplete: () => {
+        TweenMax.set(this.DOM.el, {zIndex: ''});
+        TweenMax.set(this.DOM.hover, {opacity: 0});
+      }
+    })
+    .add('begin')
+    .add(new TweenMax(this.DOM.hoverInner, 0.4, {
+      ease: Expo.easeOut,
+      y: '140%',
+      rotation: -5
+    }), 'begin')
+    .add(new TweenMax(this.DOM.hoverImg, 0.4, {
+      ease: Expo.easeOut,
+      y: '-140%',
+      rotation: 5,
+      scale: 1.2
+    }), 'begin')
   }
 
   attachHandlers() {

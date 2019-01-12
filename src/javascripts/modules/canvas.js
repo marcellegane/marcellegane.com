@@ -1,7 +1,6 @@
+/* global view Path Point */
 /* eslint-disable no-bitwise */
 import paper from 'paper';
-
-paper.install(window);
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -29,6 +28,9 @@ function getRandomDate(start, end) {
   );
 }
 
+const nsStartDate = new Date(2010, 0, 1);
+const nsEndDate = new Date();
+
 function getTeamData() {
   const team = [];
 
@@ -46,8 +48,6 @@ function getTeamData() {
   return team;
 }
 
-const nsStartDate = new Date(2010, 0, 1);
-const nsEndDate = new Date();
 const dateRange = Number(nsEndDate) - Number(nsStartDate);
 const teamData = getTeamData();
 
@@ -83,20 +83,23 @@ class Canvas {
   renderNice() {
     const color1 = this.colors[1];
     const color2 = this.colors[0];
-    const viewWidth = view.size.width;
-    const viewHeight = view.size.height;
+    const viewWidth = this.width;
+    const viewHeight = this.height;
     const viewPad = viewWidth * 0.06;
     const radius = this.getHeight() * 0.19;
-    const circle = new Path.Circle(
-      new Point(viewWidth - radius - viewPad, viewHeight - radius - viewPad),
+    const circle = new paper.Path.Circle(
+      new paper.Point(
+        viewWidth - radius - viewPad,
+        viewHeight - radius - viewPad
+      ),
       radius
     );
     circle.fillColor = color1;
     // circle.fullySelected = true;
 
     const radiusTwo = radius / 2;
-    const circleTwo = new Path.Circle(
-      new Point(
+    const circleTwo = new paper.Path.Circle(
+      new paper.Point(
         viewWidth - radius * 2 - viewPad,
         viewHeight - radiusTwo - viewPad * 2
       ),
@@ -104,7 +107,7 @@ class Canvas {
     );
     circleTwo.fillColor = color2;
 
-    view.onFrame = event => {
+    paper.view.onFrame = event => {
       for (let i = 0; i < circle.segments.length; i += 1) {
         const currX = circle.segments[i].point.x;
         const currY = circle.segments[i].point.y;
@@ -158,26 +161,26 @@ class Canvas {
         x0 + shapeWidthRadius + Math.random() * shapeWidthRadius;
       const cordsY2 = () =>
         y0 + shapeHeightRadius + Math.random() * shapeHeightRadius;
-      const shape = new Path();
+      const shape = new paper.Path();
 
       // Set shape fill based on eye colour data
       shape.fillColor = this.colors[teamData[i].eyeColour];
 
       // Set shape coordinates
-      shape.add(new Point(cordsX1(), cordsY1()));
-      shape.add(new Point(cordsX2(), cordsY1()));
-      shape.add(new Point(cordsX2(), cordsY2()));
-      shape.add(new Point(cordsX1(), cordsY2()));
+      shape.add(new paper.Point(cordsX1(), cordsY1()));
+      shape.add(new paper.Point(cordsX2(), cordsY1()));
+      shape.add(new paper.Point(cordsX2(), cordsY2()));
+      shape.add(new paper.Point(cordsX1(), cordsY2()));
       shape.closed = true;
       shape.smooth();
 
       // Show shape bounding box
-      // const bounds = new Path();
+      // const bounds = new paper.Path();
       // bounds.strokeColor = new Color(0,0,0,0.3);
-      // bounds.add(new Point(x0, y0));
-      // bounds.add(new Point(x0 + shapeWidth, y0));
-      // bounds.add(new Point(x0 + shapeWidth, y0 + shapeHeight));
-      // bounds.add(new Point(x0, y0 + shapeHeight));
+      // bounds.add(new paper.Point(x0, y0));
+      // bounds.add(new paper.Point(x0 + shapeWidth, y0));
+      // bounds.add(new paper.Point(x0 + shapeWidth, y0 + shapeHeight));
+      // bounds.add(new paper.Point(x0, y0 + shapeHeight));
       // bounds.closed = true;
     }
   }
@@ -192,6 +195,7 @@ class Canvas {
 
   init() {
     this.render();
+    document.getElementById(`canvas`).classList.remove(`is-hidden`);
 
     window.addEventListener(`resize`, () => {
       this.render();

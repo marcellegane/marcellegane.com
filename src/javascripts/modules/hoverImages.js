@@ -80,8 +80,7 @@ class HoverImg {
       .add(
         new TweenMax(this.DOM.hoverInner, 0.3, {
           ease: Expo.easeOut,
-          startAt: { x: '50%', y: '140%', rotation: 50 },
-          x: '0%',
+          startAt: { y: '140%', rotation: 30 },
           y: '0%',
           rotation: 0,
         }),
@@ -90,15 +89,14 @@ class HoverImg {
       .add(
         new TweenMax(this.DOM.hoverImg, 0.3, {
           ease: Expo.easeOut,
-          startAt: { x: '-50%', y: '-140%', rotation: -50 },
-          x: '0%',
+          startAt: { y: '-140%', rotation: -30 },
           y: '0%',
           rotation: 0,
         }),
         'begin'
       )
       .add(
-        new TweenMax(this.DOM.hoverImg, 0.5, {
+        new TweenMax(this.DOM.hoverImg, 0.3, {
           ease: Expo.easeOut,
           startAt: { scale: 2 },
           scale: 1,
@@ -125,7 +123,6 @@ class HoverImg {
         new TweenMax(this.DOM.hoverInner, 0.4, {
           ease: Expo.easeOut,
           y: '140%',
-          rotation: -5,
         }),
         'begin'
       )
@@ -133,7 +130,6 @@ class HoverImg {
         new TweenMax(this.DOM.hoverImg, 0.4, {
           ease: Expo.easeOut,
           y: '-140%',
-          rotation: 5,
           scale: 1.2,
         }),
         'begin'

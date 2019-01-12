@@ -15,3 +15,7 @@ $em-base: 16;
 @function em($pxval, $base: $em-base) {
   @return ($pxval / $base) * 1em;
 }
+
+@function strip-unit($value) {
+  @return $value / ($value * 0 + 1);
+}

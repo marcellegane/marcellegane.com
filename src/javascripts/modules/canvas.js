@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import paper from 'paper';
 
 paper.install(window);
@@ -11,25 +12,27 @@ function hexToRgbA(hex) {
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
     c = hex.substring(1).split(``);
 
-    if (c.length == 3) {
+    if (c.length === 3) {
       c = [c[0], c[0], c[1], c[1], c[2], c[2]];
     }
-    
+
     c = `0x${c.join('')}`;
-    
-    return `rgba(${[(c>>16)&255, (c>>8)&255, c&255].join(',')}, 1)`;
+
+    return `rgba(${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',')}, 1)`;
   }
   throw new Error(`Bad Hex`);
 }
 
 function getRandomDate(start, end) {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
 }
 
 function getTeamData() {
   const team = [];
 
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 20; i += 1) {
     const teamMember = {
       age: getRandomInt(18, 40),
       height: getRandomInt(160, 190),
@@ -39,7 +42,7 @@ function getTeamData() {
 
     team.push(teamMember);
   }
-  
+
   return team;
 }
 
@@ -54,8 +57,12 @@ class Canvas {
     this.parent = document.getElementById(this.parentId);
     this.canvasId = canvasId;
     this.canvas = document.getElementById(this.canvasId);
-    this.tool = new Tool();
-    this.colors = [hexToRgbA(`#C2BCC1`), hexToRgbA(`#00F7C4`), hexToRgbA(`#f9eecf`), hexToRgbA(`#eccec6`)];
+    this.colors = [
+      hexToRgbA(`#C2BCC1`),
+      hexToRgbA(`#00F7C4`),
+      hexToRgbA(`#f9eecf`),
+      hexToRgbA(`#eccec6`),
+    ];
   }
 
   setDimensions() {
@@ -64,10 +71,14 @@ class Canvas {
     this.canvas.style.width = `${this.width}px`;
     this.canvas.style.height = `${this.height}px`;
   }
-  
-  getWidth() { return this.parent.offsetWidth; }
-  
-  getHeight() { return this.parent.offsetHeight; }
+
+  getWidth() {
+    return this.parent.offsetWidth;
+  }
+
+  getHeight() {
+    return this.parent.offsetHeight;
+  }
 
   renderNice() {
     const color1 = this.colors[1];
@@ -76,13 +87,22 @@ class Canvas {
     const viewHeight = view.size.height;
     const viewPad = viewWidth * 0.06;
     const radius = this.getHeight() * 0.19;
-    const circle = new Path.Circle(new Point(viewWidth - radius - viewPad, viewHeight - radius - viewPad), radius);
+    const circle = new Path.Circle(
+      new Point(viewWidth - radius - viewPad, viewHeight - radius - viewPad),
+      radius
+    );
     circle.fillColor = color1;
     // circle.fullySelected = true;
 
     const radiusTwo = radius / 2;
-    const circleTwo = new Path.Circle(new Point(viewWidth - radius * 2 - viewPad, viewHeight - radiusTwo - viewPad * 2), radiusTwo);
-    circleTwo.fillColor = color2;    
+    const circleTwo = new Path.Circle(
+      new Point(
+        viewWidth - radius * 2 - viewPad,
+        viewHeight - radiusTwo - viewPad * 2
+      ),
+      radiusTwo
+    );
+    circleTwo.fillColor = color2;
 
     view.onFrame = event => {
       for (let i = 0; i < circle.segments.length; i += 1) {
@@ -90,7 +110,7 @@ class Canvas {
         const currY = circle.segments[i].point.y;
         const sinValue = -Math.sin(event.time + i) / 6;
         const cosValue = Math.cos(event.time + i) / 6;
-        
+
         circle.segments[i].point.x = currX + sinValue;
         circle.segments[i].point.y = currY + cosValue;
       }
@@ -100,7 +120,7 @@ class Canvas {
         const currY = circleTwo.segments[i].point.y;
         const sinValue = -Math.sin(event.time + i) / 10;
         const cosValue = Math.cos(event.time + i) / 10;
-        
+
         circleTwo.segments[i].point.x = currX + cosValue;
         circleTwo.segments[i].point.y = currY + sinValue;
       }
@@ -112,36 +132,37 @@ class Canvas {
       // }
     };
   }
-  
+
   renderSerious() {
     const boundsWidth = this.getWidth() / 5;
-    const boundsWidthRadius = boundsWidth / 2;
     const boundsHeight = this.getHeight() / 2;
-    const boundsHeightRadius = boundsHeight / 2;
-    
-    for (let i = 0; i < teamData.length; i++) {
+
+    for (let i = 0; i < teamData.length; i += 1) {
       // Scale bounding box area based on team member start date
       // Newer start dates produce smaller areas
-      let dateScale = 1 - ((Number(teamData[i].startDate) - Number(nsStartDate)) / dateRange);
+      let dateScale =
+        1 - (Number(teamData[i].startDate) - Number(nsStartDate)) / dateRange;
       // Scale up the range to increase the size of smallest items
       dateScale += 0.2;
-      
+
       const shapeWidth = boundsWidth * dateScale;
       const shapeWidthRadius = shapeWidth / 2;
       const shapeHeight = boundsHeight * dateScale;
       const shapeHeightRadius = shapeHeight / 2;
-      
+
       const x0 = getRandomInt(0, this.getWidth() - shapeWidth);
       const y0 = getRandomInt(0, this.getHeight() - shapeHeight);
-      const cordsX1 = () => { return x0 + (Math.random() * shapeWidthRadius); };
-      const cordsY1 = () => { return y0 + (Math.random() * shapeHeightRadius); };
-      const cordsX2 = () => { return x0 + shapeWidthRadius + (Math.random() * shapeWidthRadius); };
-      const cordsY2 = () => { return y0 + shapeHeightRadius + (Math.random() * shapeHeightRadius); };
+      const cordsX1 = () => x0 + Math.random() * shapeWidthRadius;
+      const cordsY1 = () => y0 + Math.random() * shapeHeightRadius;
+      const cordsX2 = () =>
+        x0 + shapeWidthRadius + Math.random() * shapeWidthRadius;
+      const cordsY2 = () =>
+        y0 + shapeHeightRadius + Math.random() * shapeHeightRadius;
       const shape = new Path();
-      
+
       // Set shape fill based on eye colour data
       shape.fillColor = this.colors[teamData[i].eyeColour];
-      
+
       // Set shape coordinates
       shape.add(new Point(cordsX1(), cordsY1()));
       shape.add(new Point(cordsX2(), cordsY1()));
@@ -149,7 +170,7 @@ class Canvas {
       shape.add(new Point(cordsX1(), cordsY2()));
       shape.closed = true;
       shape.smooth();
-      
+
       // Show shape bounding box
       // const bounds = new Path();
       // bounds.strokeColor = new Color(0,0,0,0.3);
@@ -160,18 +181,18 @@ class Canvas {
       // bounds.closed = true;
     }
   }
-  
+
   render() {
     this.setDimensions();
     paper.setup(this.canvasId);
-    
+
     this.renderNice();
     // this.renderSerious();
   }
-  
+
   init() {
     this.render();
-    
+
     window.addEventListener(`resize`, () => {
       this.render();
     });
@@ -182,7 +203,7 @@ const canvas = {
   populate() {
     const iconCanvas = new Canvas(`canvas`, `canvas-main`);
     iconCanvas.init();
-  }
+  },
 };
 
 export { canvas };

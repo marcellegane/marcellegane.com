@@ -4,12 +4,21 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1;
 }
 
-h1 {
-  font-size: rem(50);
+$h1-ratio: 2.5;
+$h2-ratio: 1.75;
+
+.h-xl {
   font-family: $ff-secondary;
+  @include fluid-type($h1-ratio);
 }
 
-h2 {
+.h-l {
   margin-top: rem(10);
-  font-size: rem(30);
+  @include fluid-type($h2-ratio);
+}
+
+.h-m {
+  max-width: 38em;
+  margin-top: rem(32);
+  @include fluid-type();
 }

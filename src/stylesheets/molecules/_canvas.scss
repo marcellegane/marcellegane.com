@@ -4,6 +4,11 @@
   right: 0;
   bottom: 0;
   left: 0;
+  opacity: 0.2;
+
+  @include media($small-screen-up) {
+    opacity: 1;
+  }
 }
 
 .canvas__main {

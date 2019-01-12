@@ -3,3 +3,23 @@
     margin-top: $ratio * 1em;
   }
 }
+
+@mixin fluid-type($ratio: 1) {
+  $min-font-size: 16 * $ratio;
+  $max-font-size: 21 * $ratio;
+  $min-font-size-em: em($min-font-size);
+  $max-font-size-em: em($max-font-size);
+  $min-vw: 500;
+  $max-vw: 1560;
+  $min-vw-em: em($min-vw);
+  $max-vw-em: em($max-vw);
+  font-size: $min-font-size-em;
+  
+  @media screen and (min-width: $min-vw-em) {
+    font-size: calc(#{$min-font-size-em} + #{$max-font-size - $min-font-size} * ((100vw - #{$min-vw-em}) / #{$max-vw - $min-vw)}));
+  }
+  
+  @media screen and (min-width: $max-vw-em) {
+    font-size: $max-font-size-em;
+  }
+}

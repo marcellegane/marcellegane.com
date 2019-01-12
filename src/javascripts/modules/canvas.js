@@ -205,8 +205,10 @@ class Canvas {
 
 const canvas = {
   populate() {
-    const iconCanvas = new Canvas(`canvas`, `canvas-main`);
-    iconCanvas.init();
+    window.onload = () => {
+      const iconCanvas = new Canvas(`canvas`, `canvas-main`);
+      iconCanvas.init();
+    };
   },
 };
 

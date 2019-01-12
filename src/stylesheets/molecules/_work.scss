@@ -1,0 +1,11 @@
+.work {
+  color: $black;
+  @include link-underline($white, $black, $grey);
+
+  &:hover,
+  &:focus,
+  &:active {
+    outline: none;
+    @include link-underline($white, $secondary-color, $grey);
+  }
+}

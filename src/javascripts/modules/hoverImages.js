@@ -44,8 +44,17 @@ class HoverImg {
       left: document.body.scrollLeft + document.documentElement.scrollLeft,
       top: document.body.scrollTop + document.documentElement.scrollTop,
     };
-    this.DOM.hover.style.top = `${mousePos.y + 20 - docScrolls.top}px`;
-    this.DOM.hover.style.left = `${mousePos.x + 20 - docScrolls.left}px`;
+    const winWidth = window.innerWidth;
+    const hoverWidth = this.DOM.hoverInner.offsetWidth;
+    const offset = 20;
+    const top = mousePos.y + offset - docScrolls.top;
+    const left = mousePos.x + offset - docScrolls.left;
+    const leftTotal = left + hoverWidth + offset;
+    const leftFinal =
+      leftTotal > winWidth ? left - (leftTotal - winWidth) : left;
+
+    this.DOM.hover.style.top = `${top}px`;
+    this.DOM.hover.style.left = `${leftFinal}px`;
   };
 
   mouseEnter(ev) {
